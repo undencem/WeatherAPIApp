@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="@string/by_name"
+        android:hint="@string/city_name"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:padding="10dp"

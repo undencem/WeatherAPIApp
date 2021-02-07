@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
            @Override
            public void onClick(View v) {
                Log.e(TAG, "onClick: btn_WeatherByCityName ");
-                Toast.makeText(MainActivity.this,"You clicked 3",Toast.LENGTH_LONG).show();
+               Toast.makeText(MainActivity.this,"You clicked 3",Toast.LENGTH_LONG).show();
            }
        });
 
