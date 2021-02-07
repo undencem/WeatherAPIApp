@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "onClick: btn_cityID button: " );
 
                 // Instantiate the RequestQueue.
-                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                // RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
                 String url ="https://www.metaweather.com/api/location/search/?query="+et_datainput.getText().toString();
 
                 JsonArrayRequest  request =
@@ -77,8 +77,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-                // Add the request to the RequestQueue.
-                queue.add(request);
+               MySingleton.getInstance(MainActivity.this).addToRequestQueue(request);
             }
         });
 
