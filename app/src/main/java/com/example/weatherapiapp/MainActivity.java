@@ -10,6 +10,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -30,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         et_datainput = (EditText)findViewById(R.id.et_datainput);
         lv_weatherReport=(ListView)findViewById(R.id.lv_weatherReports);
 
-
         /**
          * click listeners for buttons
          *
@@ -41,7 +52,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.e(TAG, "onClick: btn_cityID button: " );
-                Toast.makeText(getApplicationContext(),"You clicked 1",Toast.LENGTH_LONG).show();
+
+                // Instantiate the RequestQueue.
+                RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
+                String url ="https://www.metaweather.com/api/location/search/?query="+et_datainput.getText().toString();
+
+                JsonArrayRequest  request =
+                        new JsonArrayRequest(Request.Method.GET,url,null, new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                    String cityID="";
+                                    try{
+                                        JSONObject cityInfo = response.getJSONObject(0);
+                                        cityID=cityInfo.getString("woeid");
+                                    }catch(JSONException e){
+                                        e.printStackTrace();
+                                    }
+                                    Toast.makeText(getApplicationContext(),"City ID:"+cityID,Toast.LENGTH_LONG).show();
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(getApplicationContext(),"Error occurred",Toast.LENGTH_LONG).show();
+                            }
+                        });
+
+                // Add the request to the RequestQueue.
+                queue.add(request);
             }
         });
 
