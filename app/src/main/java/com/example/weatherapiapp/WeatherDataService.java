@@ -33,6 +33,7 @@ public class WeatherDataService {
 
         void onResponse(String cityID);
     }
+    /** **/
 
     public void getCityID(String cityName,VolleyResponseListener volleyResponseListener){
 
@@ -58,7 +59,7 @@ public class WeatherDataService {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context,"Error occurred",Toast.LENGTH_LONG).show();
+                        // Toast.makeText(context,"Error occurred",Toast.LENGTH_LONG).show();
                         volleyResponseListener.onError("Something wrong");
                     }
                 });

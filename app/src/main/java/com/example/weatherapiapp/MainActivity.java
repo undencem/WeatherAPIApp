@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity  {
     EditText et_datainput;
     ListView lv_weatherReport;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +50,13 @@ public class MainActivity extends AppCompatActivity  {
          * MainActivity.this = getApplicationContext()
          *
          */
+
+        final WeatherDataService weatherDataService = new WeatherDataService(MainActivity.this);
+
         btn_cityID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WeatherDataService weatherDataService = new WeatherDataService(MainActivity.this);
+
 
                 //Didnt return anything
                  weatherDataService.getCityID(et_datainput.getText().toString(), new WeatherDataService.VolleyResponseListener() {
@@ -65,9 +70,6 @@ public class MainActivity extends AppCompatActivity  {
                         Toast.makeText(MainActivity.this,"Returned as ID of:"+cityID,Toast.LENGTH_LONG).show();
                     }
                 });
-
-
-
             }
         });
 
