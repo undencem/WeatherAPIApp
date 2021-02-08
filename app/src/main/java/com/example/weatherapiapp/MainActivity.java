@@ -22,7 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     private static final String TAG = "MainActivity";
     
@@ -53,7 +53,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 WeatherDataService weatherDataService = new WeatherDataService(MainActivity.this);
 
-                String cityID = weatherDataService.getCityID(et_datainput.getText().toString());
+                //Didnt return anything
+                 weatherDataService.getCityID(et_datainput.getText().toString(), new WeatherDataService.VolleyResponseListener() {
+                    @Override
+                    public void onError(String message) {
+                        Toast.makeText(MainActivity.this,"Error occurred",Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onResponse(String cityID) {
+                        Toast.makeText(MainActivity.this,"Returned as ID of:"+cityID,Toast.LENGTH_LONG).show();
+                    }
+                });
+
+
 
             }
         });

@@ -19,12 +19,22 @@ public class WeatherDataService {
     public static final String QUERY_FOR_CITY_ID = "https://www.metaweather.com/api/location/search/?query=";
 
     Context context;
+    String cityID;
 
     public WeatherDataService(Context context) {
         this.context = context;
     }
 
-    public String getCityID(String cityName){
+    /**
+     *create a proper Volley Listener for cross class Volley method calling
+     */
+    public interface VolleyResponseListener {
+        void onError(String message);
+
+        void onResponse(String cityID);
+    }
+
+    public void getCityID(String cityName,VolleyResponseListener volleyResponseListener){
 
         // Instantiate the RequestQueue.
         // RequestQueue queue = Volley.newRequestQueue(MainActivity.this);
@@ -34,25 +44,27 @@ public class WeatherDataService {
                 new JsonArrayRequest(Request.Method.GET,url,null, new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        String cityID="";
+                        cityID="";
                         try{
                             JSONObject cityInfo = response.getJSONObject(0);
                             cityID=cityInfo.getString("woeid");
                         }catch(JSONException e){
                             e.printStackTrace();
                         }
-                        Toast.makeText(context,"City ID:"+cityID,Toast.LENGTH_LONG).show();
+                        //this works
+                        //Toast.makeText(context,"City ID:"+cityID,Toast.LENGTH_LONG).show();
+                        volleyResponseListener.onResponse(cityID);
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(context,"Error occurred",Toast.LENGTH_LONG).show();
+                        volleyResponseListener.onError("Something wrong");
                     }
                 });
 
         MySingleton.getInstance(context).addToRequestQueue(request);
 
-        return null;
     };
 
     public List<WeatherReportModel> getCityForecastByID(String cityID){
