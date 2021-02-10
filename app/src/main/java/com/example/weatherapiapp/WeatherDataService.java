@@ -153,8 +153,41 @@ public class WeatherDataService {
     };
 
 
-    public List<WeatherReportModel> getCityForecastByName(String cityName){
-        return null;
-    };
+    public interface GetCityForecastByNameCallback {
+        void onError(String message);
+        void onResponse(List<WeatherReportModel> weatherReportModels);
+    }
 
+
+    public void getCityForecastByName(String cityName,GetCityForecastByNameCallback getCityForecastByNameCallback){
+
+        //fetch the city id given the city name
+        getCityID(cityName, new VolleyResponseListener() {
+            @Override
+            public void onError(String message) {
+
+            }
+
+            @Override
+            public void onResponse(String cityID) {
+                    // now we have the city id
+                getCityForecastByID(cityID, new ForeCastByIDResponse() {
+                    @Override
+                    public void onError(String message) {
+
+                    }
+
+                    @Override
+                    public void onResponse(List<WeatherReportModel> weatherReportModel) {
+                            // we have the weather report
+                        getCityForecastByNameCallback.onResponse(weatherReportModel);
+                    }
+                });
+            }
+        });
+
+        // fetch the city forecast given the city id
+
+
+    };
 }
