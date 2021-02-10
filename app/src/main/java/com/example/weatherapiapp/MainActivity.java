@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity  {
         });
 
 
-       btn_getWeatherByID.setOnClickListener(new View.OnClickListener(){
+        btn_getWeatherByID.setOnClickListener(new View.OnClickListener(){
            @Override
            public void onClick(View v) {
 
@@ -102,13 +102,29 @@ public class MainActivity extends AppCompatActivity  {
            }
        });
 
-       btn_WeatherByCityName.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               Log.e(TAG, "onClick: btn_WeatherByCityName ");
-               Toast.makeText(MainActivity.this,"You clicked 3",Toast.LENGTH_LONG).show();
-           }
-       });
+        btn_WeatherByCityName.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                weatherDataService.getCityForecastByName(et_datainput.getText().toString(), new WeatherDataService.GetCityForecastByNameCallback(){
+
+                    @Override
+                    public void onError(String message) {
+                        Toast.makeText(MainActivity.this,"Error",Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(List<WeatherReportModel> weatherReportModel) {
+
+                        // put the entire list into ListView control
+                        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1,weatherReportModel);
+
+                        // assign arrayAdapter to ListView
+                        lv_weatherReport.setAdapter(arrayAdapter);
+                    }
+                });
+            }
+        });
 
     }
 }
